@@ -12,6 +12,7 @@ startlocal() {
 }
 
 main() {
+  build
   if [[ $1 = deploy ]];then
     deploy
   else
