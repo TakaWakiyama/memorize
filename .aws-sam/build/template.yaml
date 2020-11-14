@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'memorize
+
+  Sample SAM Template for memorize
+
+  '
+Globals:
+  Function:
+    Timeout: 7
+Resources:
+  HandleUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: HandleUser
+      Handler: users
+      Runtime: go1.x
+      Tracing: Active
+      Policies:
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+      Events:
+        CatchAll:
+          Type: Api
+          Properties:
+            Path: /users
+            Method: ANY
+      Environment:
+        Variables:
+          PARAM1: VALUE
+Outputs:
+  HelloWorldAPI:
+    Description: API Gateway endpoint URL for Prod environment for First Function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/users/
