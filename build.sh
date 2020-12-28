@@ -8,7 +8,7 @@ deploy () {
 startlocal() {
   cd container && docker-compose up -d
   cd ../
-  sam local start-api --docker-network lambda-local-test
+  sam local start-api --docker-network lambda-local
 }
 
 main() {
