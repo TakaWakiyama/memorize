@@ -13,6 +13,10 @@ startlocal() {
 
 main() {
   build
+  if [[ $? = 1 ]];then
+    return 1
+  fi
+
   if [[ $1 = deploy ]];then
     deploy
   else
@@ -21,3 +25,4 @@ main() {
 }
 
 main $1
+echo $?

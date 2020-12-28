@@ -27,6 +27,46 @@ Resources:
       Environment:
         Variables:
           PARAM1: VALUE
+  HandleMemos:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: HandleMemos
+      Handler: memos
+      Runtime: go1.x
+      Tracing: Active
+      Policies:
+      - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+      Events:
+        CatchAll:
+          Type: Api
+          Properties:
+            Path: /memos
+            Method: ANY
+            RequestParameters:
+              integration.request.querystring.memo-type:
+                Required: false
+                Caching: false
+      Environment:
+        Variables:
+          PARAM1: VALUE
+  HandleMemo:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: HandleMemo
+      Handler: memos
+      Runtime: go1.x
+      Tracing: Active
+      Policies:
+      - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+      Events:
+        CatchAll:
+          Type: Api
+          Properties:
+            Path: /memos/{pk}
+            Method: ANY
+      Environment:
+        Variables:
+          PARAM1: VALUE
 Outputs:
   HelloWorldAPI:
     Description: API Gateway endpoint URL for Prod environment for First Function
