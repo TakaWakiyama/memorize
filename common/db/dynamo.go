@@ -1,4 +1,4 @@
-package main
+package db
 
 import (
 	"github.com/aws/aws-sdk-go/aws"
@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
 )
 
-func initalizeDynamoClient() (dynamodbiface.DynamoDBAPI, error) {
+func InitalizeDynamoClient() (dynamodbiface.DynamoDBAPI, error) {
 	region := "ap-northeast-1"
 	awsSession, err := session.NewSession(&aws.Config{
 		Region: aws.String(region)},

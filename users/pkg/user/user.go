@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 
-	"users/pkg/validators"
+	"memos/users/pkg/validators"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-sdk-go/aws"
@@ -25,6 +25,7 @@ var (
 	ErrorUserDoesNotExists       = "user.User does not exist"
 )
 
+// User is
 type User struct {
 	Email     string `json:"email"`
 	FirstName string `json:"firstName"`
@@ -134,6 +135,7 @@ func UpdateUser(req events.APIGatewayProxyRequest, tableName string, dynaClient 
 	}
 	return &u, nil
 }
+
 func DeleteUser(req events.APIGatewayProxyRequest, tableName string, dynaClient dynamodbiface.DynamoDBAPI) error {
 	email := req.QueryStringParameters["email"]
 	input := &dynamodb.DeleteItemInput{
