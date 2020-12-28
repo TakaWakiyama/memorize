@@ -7,28 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
-
-	"local.packages/common"
-	"users/pkg/handlers"
 )
-
-var (
-	dynaClient dynamodbiface.DynamoDBAPI
-)
-
-func main() {
-	region := "ap-northeast-1"
-	awsSession, err := session.NewSession(&aws.Config{
-		Region: aws.String(region)},
-	)
-	if err != nil {
-		return
-	}
-	dynaClient = dynamodb.New(awsSession)
-	lambda.Start(handler)
-}
-
-const tableName = "LambdaInGoUser"
 
 func handler(req events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse, error) {
 	switch req.HTTPMethod {
