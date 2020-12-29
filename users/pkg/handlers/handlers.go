@@ -1,8 +1,8 @@
 package handlers
 
 import (
+	"memos/users/pkg/user"
 	"net/http"
-	"users/pkg/user"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-sdk-go/aws"

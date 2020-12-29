@@ -8,11 +8,15 @@ deploy () {
 startlocal() {
   cd container && docker-compose up -d
   cd ../
-  sam local start-api --docker-network lambda-local-test
+  sam local start-api --docker-network lambda-local
 }
 
 main() {
   build
+  if [[ $? = 1 ]];then
+    return 1
+  fi
+
   if [[ $1 = deploy ]];then
     deploy
   else
@@ -21,3 +25,4 @@ main() {
 }
 
 main $1
+echo $?

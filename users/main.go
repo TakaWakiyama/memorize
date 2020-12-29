@@ -3,26 +3,22 @@ package main
 import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
-	"users/pkg/handlers"
+
+	"memos/common/db"
+	"memos/users/pkg/handlers"
 )
 
 var (
 	dynaClient dynamodbiface.DynamoDBAPI
+	err        error
 )
 
 func main() {
-	region := "ap-northeast-1"
-	awsSession, err := session.NewSession(&aws.Config{
-		Region: aws.String(region)},
-	)
+	dynaClient, err = db.InitalizeDynamoClient()
 	if err != nil {
 		return
 	}
-	dynaClient = dynamodb.New(awsSession)
 	lambda.Start(handler)
 }
 
