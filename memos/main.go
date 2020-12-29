@@ -18,17 +18,17 @@ var (
 )
 
 func main() {
-	fmt.Printf("called")
 	dynaClient = *db.InitalizeDynamoClient()
 	lambda.Start(handler)
 }
 
 func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse, error) {
+	fmt.Printf("called")
 	switch request.HTTPMethod {
 	case "GET":
-		return handlers.GetMemo(dynaClient, "gggggg")
+		return handlers.GetMemo(&dynaClient, "gggggg")
 	case "POST":
-		return handlers.CreateMemo(dynaClient)
+		return handlers.CreateMemo(&dynaClient)
 	default:
 		return nil, errors.New("ggg")
 	}
