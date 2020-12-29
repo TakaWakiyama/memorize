@@ -5,25 +5,23 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
+	"github.com/guregu/dynamo"
 
 	"memos/common/db"
 )
 
 var (
 	err        error
-	dynaClient dynamodbiface.DynamoDBAPI
+	dynaClient dynamo.DB
 )
 
 func main() {
-	dynaClient, err = db.InitalizeDynamoClient()
-	if err != nil {
-		return
-	}
+	dynaClient = *db.InitalizeDynamoClient()
 	lambda.Start(handler)
 }
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+
 	/*
 		switch req.HTTPMethod {
 		case "GET":
