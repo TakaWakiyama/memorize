@@ -14,7 +14,7 @@ import (
 	"memos/notification/pkg"
 )
 
-const webhookURL = "https://hooks.slack.com/services/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"
+const webhookURL = "https://hooks.slack.com/services/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"
 
 // var (err error)
 
