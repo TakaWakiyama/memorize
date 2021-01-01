@@ -1,49 +1,35 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
+	"github.com/guregu/dynamo"
 
 	"memos/common/db"
+	"memos/memos/pkg/handlers"
 )
 
 var (
 	err        error
-	dynaClient dynamodbiface.DynamoDBAPI
+	dynaClient dynamo.DB
 )
 
 func main() {
-	dynaClient, err = db.InitalizeDynamoClient()
-	if err != nil {
-		return
-	}
+	dynaClient = *db.InitalizeDynamoClient()
 	lambda.Start(handler)
 }
 
-func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	/*
-		switch req.HTTPMethod {
-		case "GET":
-			// return handlers.GetUser(req, tableName, dynaClient)
-		case "POST":
-			// return handlers.CreateUser(req, tableName, dynaClient)
-		case "PUT":
-			// return handlers.UpdateUser(req, tableName, dynaClient)
-		case "DELETE":
-			// return handlers.DeleteUser(req, tableName, dynaClient)
-		default:
-			// return handlers.UnhandledMethod()
-		}
-	*/
-	fmt.Print(request.PathParameters)
-	fmt.Print(request.QueryStringParameters)
-	res := events.APIGatewayProxyResponse{
-		Body:       fmt.Sprintf("Hello, %v", request.PathParameters["pk"]),
-		StatusCode: 200,
+func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse, error) {
+	fmt.Printf("called")
+	switch request.HTTPMethod {
+	case "GET":
+		return handlers.GetMemo(&dynaClient, "gggggg")
+	case "POST":
+		return handlers.CreateMemo(&dynaClient)
+	default:
+		return nil, errors.New("ggg")
 	}
-
-	return res, nil
 }
