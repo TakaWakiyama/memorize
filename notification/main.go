@@ -9,9 +9,12 @@ import (
 	"encoding/json"
 	"log"
 
-	// "github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+
+	"memos/notification/pkg"
 )
+
+const webhookURL = "https://hooks.slack.com/services/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"
 
 // var (err error)
 
@@ -20,12 +23,15 @@ func main() {
 	lambda.Start(handler)
 }
 
+// MyEvent is passed from CluodWatch
 type MyEvent struct {
-	Name string `json:"name"`
-	Age  int    `json:"age"`
+	User  string   `json:"user"`
+	Table string   `json:"table"`
+	Dates []string `json:"dates"`
 }
 
 func handler(context context.Context, event MyEvent) {
-	eventJson, _ := json.MarshalIndent(event, "", "  ")
-	log.Printf("EVENT: %s", eventJson)
+	eventJSON, _ := json.MarshalIndent(event, "", "  ")
+	log.Printf("EVENT: %s", eventJSON)
+	pkg.SendNotificationToSlack(webhookURL, "sample")
 }
