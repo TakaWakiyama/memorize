@@ -17,18 +17,34 @@ var (
 )
 
 func CreateSetting(req events.APIGatewayProxyRequest, dynaClient *dynamo.DB) (events.APIGatewayProxyResponse, error) {
+	type Body struct {
+		User              string `json:"user"`
+		Category          string `json:"category"`
+		ExecutionInterval []int  `json:"execution_interval"`
+		TimeExecute       string `json:"time_execute"`
+		Template          string `json:"template"`
+	}
 	jsonBytes := []byte(req.Body)
 	// byte[]body
-	setting := new(settings.Setting)
-	if err := json.Unmarshal(jsonBytes, setting); err != nil {
+	body := new(Body)
+	if err := json.Unmarshal(jsonBytes, body); err != nil {
 		return events.APIGatewayProxyResponse{}, err
 	}
+	setting := settings.Setting{
+		User:              body.User,
+		Category:          body.Category,
+		ExecutionInterval: body.ExecutionInterval,
+		TimeExecute:       body.TimeExecute,
+		Template:          body.Template,
+		IsActive:          1,
+	}
+
 	if !(setting.User != "" && setting.Category != "") {
 		return events.APIGatewayProxyResponse{}, errors.New("ggg")
 	}
 	// user の存在と categoryの存在をチェック
 	table := dynaClient.Table(tableName)
-	settingKey, err := settings.Create(table, *setting)
+	settingKey, err := settings.Create(table, setting)
 	if err != nil {
 		return events.APIGatewayProxyResponse{}, err
 	}
