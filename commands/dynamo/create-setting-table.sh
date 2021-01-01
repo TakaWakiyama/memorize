@@ -2,7 +2,7 @@
   --table-name Settings \
   --attribute-definitions \
     AttributeName=user,AttributeType=S \
-    AttributeName=setting_id,AttributeType=S \
-  --key-schema AttributeName=user,KeyType=HASH AttributeName=setting_id,KeyType=RANGE \
+    AttributeName=category,AttributeType=S \
+  --key-schema AttributeName=user,KeyType=HASH AttributeName=category,KeyType=RANGE \
   --provisioned-throughput ReadCapacityUnits=25,WriteCapacityUnits=1 \
 
