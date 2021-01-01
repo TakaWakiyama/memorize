@@ -55,6 +55,17 @@ Resources:
         Variables:
           PARAM1: VALUE
 
+  SendNotification:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: notification/
+      Handler: notification
+      Runtime: go1.x
+      Tracing: Active # https://docs.aws.amazon.com/lambda/latest/dg/lambda-x-ray.html
+      Policies:
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess # need to change (Read Only)
+
+
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM

@@ -49,6 +49,15 @@ Resources:
       Environment:
         Variables:
           PARAM1: VALUE
+  SendNotification:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: SendNotification
+      Handler: notification
+      Runtime: go1.x
+      Tracing: Active
+      Policies:
+      - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
 Outputs:
   HelloWorldAPI:
     Description: API Gateway endpoint URL for Prod environment for First Function
