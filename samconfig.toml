@@ -2,9 +2,9 @@ version = 0.1
 [default]
 [default.deploy]
 [default.deploy.parameters]
-stack_name = "memp"
+stack_name = "memo"
 s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-r1cv8i3dbzcc"
-s3_prefix = "memp"
+s3_prefix = "memo"
 region = "ap-northeast-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
