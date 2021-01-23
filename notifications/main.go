@@ -20,12 +20,10 @@ const webhookURL = "https://hooks.slack.com/services/TQKAR2NJ0/B01HS651ARK/B6NAA
 
 var dynaClient dynamo.DB
 
-type Memos struct {
+type Memo struct {
 	User     string `dynamo:"User,hash"`
 	MemoId   string `dynamo:"MemoId,range"`
-	Seq      int64  `dynamo:"Seq,range" localIndex:"Seq-index,range"`
-	Category string `dynamo:"Category" index:"Category-KeyID-index"`
-	KeyID    string `dynamo:"KeyID" index:"Category-KeyID-index"`
+	MemoType string `dynamo:"MemoType,range"`
 }
 
 func main() {
@@ -49,16 +47,15 @@ func handler(context context.Context, event MyEvent) {
 	}
 }
 
-func getMemos(user, itemType string) string {
-	var result interface{}
-	err := dynaClient.Table("Items").Get("User", "Twaki").Filter("item_type", itemType).All(&result)
+func getMemos(user, MemoType string) string {
+	var result []Memo
+	err := dynaClient.Table("Memos").Get("User", "Twaki").Filter("'MemoType' = ?", MemoType).All(&result)
 	if err != nil {
-		fmt.Errorf("%v", err)
-		return "error"
+		fmt.Printf("%v", err)
+		return ""
 	}
 	//item := dynaClient.Table("Items").Get("User", "Twaki")
-	fmt.Printf("%v ", result)
-	fmt.Print("\nfffff\n")
+	fmt.Print(result)
 	// fmt.Println(item, result, user, itemType)
 	return ""
 }

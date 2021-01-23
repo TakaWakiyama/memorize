@@ -14,7 +14,7 @@ func InitalizeDynamoClient() *dynamo.DB {
 	var config aws.Config
 	config.Region = aws.String(region)
 	if os.Getenv("ENV_TYPE") != "production" {
-		config.Endpoint = aws.String("http://127.0.0.1:8000")
+		config.Endpoint = aws.String("http://172.22.0.1:8000")
 		config.Credentials = credentials.NewStaticCredentials("dummy", "dummy", "dummy")
 	}
 

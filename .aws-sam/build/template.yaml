@@ -7,7 +7,7 @@ Description: 'memorize
   '
 Globals:
   Function:
-    Timeout: 7
+    Timeout: 10
 Resources:
   HandleMemos:
     Type: AWS::Serverless::Function
