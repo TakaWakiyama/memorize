@@ -71,7 +71,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: SendNotification
-      Handler: notification
+      Handler: notifications
       Runtime: go1.x
       Tracing: Active
       Policies:

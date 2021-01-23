@@ -13,7 +13,7 @@ startlocal() {
 
 main() {
   build
-  if [[ $? = 1 ]];then
+  if [[ $? = 1 || $1 == pass ]];then
     return 1
   fi
 

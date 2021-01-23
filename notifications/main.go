@@ -6,32 +6,51 @@ package main
 // slack の webhook urlにpost リクエストを送信する
 import (
 	"context"
-	"encoding/json"
-	"log"
-
+	"fmt"
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/guregu/dynamo"
+	"log"
+	"memos/common/db"
 
-	"memos/notification/pkg"
+	"memos/notifications/pkg/notification"
 )
 
+// const webhookURL = os.Getenv("SlackWebhookURl") || "https://hooks.slack.com/services/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"
 const webhookURL = "https://hooks.slack.com/services/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"
 
-// var (err error)
+var dynaClient dynamo.DB
+
+type Memos struct {
+	User     string `dynamo:"User,hash"`
+	MemoId   string `dynamo:"MemoId,range"`
+	Seq      int64  `dynamo:"Seq,range" localIndex:"Seq-index,range"`
+	Category string `dynamo:"Category" index:"Category-KeyID-index"`
+	KeyID    string `dynamo:"KeyID" index:"Category-KeyID-index"`
+}
 
 func main() {
-	log.Printf("log:START Lambda Function")
+	log.Printf("log:START SendNotification")
+	dynaClient = *db.InitalizeDynamoClient()
 	lambda.Start(handler)
 }
 
 // MyEvent is passed from CluodWatch
 type MyEvent struct {
-	User  string   `json:"user"`
-	Table string   `json:"table"`
-	Dates []string `json:"dates"`
+	User     string   `json:"user"`
+	ItemType string   `json:"item_type"`
+	Dates    []string `json:"dates"`
 }
 
 func handler(context context.Context, event MyEvent) {
-	eventJSON, _ := json.MarshalIndent(event, "", "  ")
-	log.Printf("EVENT: %s", eventJSON)
-	pkg.SendNotificationToSlack(webhookURL, "sample")
+	result := getMemos(event.User, event.ItemType)
+	if result != "" {
+		notification.SendNotificationToSlack(webhookURL, result)
+	}
+}
+
+func getMemos(user, itemType string) string {
+	var result interface{}
+	item := dynaClient.Table("Items").Get("User", "Twaki").Filter("ItemType", itemType).All(&result)
+	fmt.Println(item, result, user, itemType)
+	return ""
 }
