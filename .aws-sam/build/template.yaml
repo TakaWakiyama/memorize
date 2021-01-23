@@ -7,7 +7,7 @@ Description: 'memorize
   '
 Globals:
   Function:
-    Timeout: 7
+    Timeout: 10
 Resources:
   HandleMemos:
     Type: AWS::Serverless::Function
@@ -49,11 +49,29 @@ Resources:
       Environment:
         Variables:
           PARAM1: VALUE
+  HandleSettings:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: HandleSettings
+      Handler: settings
+      Runtime: go1.x
+      Tracing: Active
+      Policies:
+      - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+      Events:
+        CatchAll:
+          Type: Api
+          Properties:
+            Path: /settings
+            Method: POST
+      Environment:
+        Variables:
+          PARAM1: VALUE
   SendNotification:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: SendNotification
-      Handler: notification
+      Handler: notifications
       Runtime: go1.x
       Tracing: Active
       Policies:

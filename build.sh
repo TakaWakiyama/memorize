@@ -19,7 +19,7 @@ main() {
 
   if [[ $1 = deploy ]];then
     deploy
-  else
+  elif [[ $1 = api ]];then
     startlocal
   fi
 }

@@ -1,0 +1,92 @@
+{
+    "AttributeDefinitions": [
+        {
+            "AttributeName": "CreatedAt",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "CreatedOn",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "MemoId",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "MemoType",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "User",
+            "AttributeType": "S"
+        }
+    ],
+    "TableName": "Memos",
+    "KeySchema": [
+        {
+            "AttributeName": "User",
+            "KeyType": "HASH"
+        },
+        {
+            "AttributeName": "MemoId",
+            "KeyType": "RANGE"
+        }
+    ],
+    "ProvisionedThroughput": {
+        "ReadCapacityUnits": 5,
+        "WriteCapacityUnits": 5
+    },
+    "LocalSecondaryIndexes": [
+        {
+            "IndexName": "User-MemoType-index",
+            "KeySchema": [
+                {
+                    "AttributeName": "User",
+                    "KeyType": "HASH"
+                },
+                {
+                    "AttributeName": "MemoType",
+                    "KeyType": "RANGE"
+                }
+            ],
+            "Projection": {
+                "ProjectionType": "ALL"
+            }
+        },
+        {
+            "IndexName": "User-CreatedAt-index",
+            "KeySchema": [
+                {
+                    "AttributeName": "User",
+                    "KeyType": "HASH"
+                },
+                {
+                    "AttributeName": "CreatedAt",
+                    "KeyType": "RANGE"
+                }
+            ],
+            "Projection": {
+                "ProjectionType": "ALL"
+            }
+        }
+    ],
+    "GlobalSecondaryIndexes": [
+        {
+            "IndexName": "CreatedOn-index",
+            "KeySchema": [
+                {
+                    "AttributeName": "CreatedOn",
+                    "KeyType": "HASH"
+                }
+            ],
+            "Projection": {
+                "ProjectionType": "ALL"
+            },
+            "ProvisionedThroughput": {
+                "ReadCapacityUnits": 5,
+                "WriteCapacityUnits": 5
+            }
+        }
+    ]
+}
+

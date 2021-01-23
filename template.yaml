@@ -8,7 +8,7 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 7
+    Timeout: 10
 
 
 Resources:
@@ -24,7 +24,7 @@ Resources:
         - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
       Events:
         CatchAll:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api
           Properties:
             Path: /memos
             Method: GET
@@ -32,17 +32,17 @@ Resources:
                 "method.request.querystring.memo-type":
                   Required: false
                   Caching: false
-      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+      Environment:
         Variables:
           PARAM1: VALUE
 
   HandleMemo:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function
     Properties:
       CodeUri: memos/
       Handler: memos
       Runtime: go1.x
-      Tracing: Active # https://docs.aws.amazon.com/lambda/latest/dg/lambda-x-ray.html
+      Tracing: Active
       Policies:
         - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
       Events:
@@ -55,13 +55,32 @@ Resources:
         Variables:
           PARAM1: VALUE
 
-  SendNotification:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+  HandleSettings:
+    Type: AWS::Serverless::Function
     Properties:
-      CodeUri: notification/
-      Handler: notification
+      CodeUri: settings/
+      Handler: settings
       Runtime: go1.x
-      Tracing: Active # https://docs.aws.amazon.com/lambda/latest/dg/lambda-x-ray.html
+      Tracing: Active
+      Policies:
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+      Events:
+        CatchAll:
+          Type: Api
+          Properties:
+            Path: /settings
+            Method: POST
+      Environment:
+        Variables:
+          PARAM1: VALUE
+
+  SendNotification:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: notifications/
+      Handler: notifications
+      Runtime: go1.x
+      Tracing: Active
       Policies:
         - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess # need to change (Read Only)
 
