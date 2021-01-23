@@ -11,13 +11,11 @@ import (
 	"github.com/guregu/dynamo"
 	"log"
 	"memos/common/db"
+	"os"
 	"regexp"
 
 	"memos/notifications/pkg/notification"
 )
-
-// const webhookURL = os.Getenv("SlackWebhookURl") || "https://hooks.slack.com/services/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"
-const webhookURL = "https://hooks.slack.com/services/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"
 
 var dynaClient dynamo.DB
 
@@ -44,13 +42,13 @@ type MyEvent struct {
 
 func handler(context context.Context, event MyEvent) {
 	memos := getMemos(event.User, event.ItemType)
+	webhookURL := os.Getenv("SlackWebhookURl")
 	var result string
 	for i, memo := range memos {
 		s, _ := Parse(event.Template, memo.Detail)
 		result += fmt.Sprintf("%d: %s\n", i+1, s)
 	}
 	if result != "" {
-		fmt.Printf(result)
 		notification.SendNotificationToSlack(webhookURL, result)
 	}
 }
@@ -76,7 +74,7 @@ func Parse(template string, various map[string]string) (string, error) {
 		attributeName := extractNames[1]
 		// fmt.Printf("tname %v", tname) output -> tname [{ word} word]tname [{ type } type]
 		if result := various[attributeName]; result != "" {
-			return fmt.Sprintf("%s", result)
+			return result
 		}
 		return ""
 	}
