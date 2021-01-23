@@ -13,13 +13,13 @@ startlocal() {
 
 main() {
   build
-  if [[ $? = 1 || $1 == pass ]];then
+  if [[ $? = 1 ]];then
     return 1
   fi
 
   if [[ $1 = deploy ]];then
     deploy
-  else
+  elif [[ $1 = api ]];then
     startlocal
   fi
 }

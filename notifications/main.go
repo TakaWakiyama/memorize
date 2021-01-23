@@ -43,6 +43,7 @@ type MyEvent struct {
 
 func handler(context context.Context, event MyEvent) {
 	result := getMemos(event.User, event.ItemType)
+	fmt.Printf(result)
 	if result != "" {
 		notification.SendNotificationToSlack(webhookURL, result)
 	}
@@ -50,7 +51,14 @@ func handler(context context.Context, event MyEvent) {
 
 func getMemos(user, itemType string) string {
 	var result interface{}
-	item := dynaClient.Table("Items").Get("User", "Twaki").Filter("ItemType", itemType).All(&result)
-	fmt.Println(item, result, user, itemType)
+	err := dynaClient.Table("Items").Get("User", "Twaki").Filter("item_type", itemType).All(&result)
+	if err != nil {
+		fmt.Errorf("%v", err)
+		return "error"
+	}
+	//item := dynaClient.Table("Items").Get("User", "Twaki")
+	fmt.Printf("%v ", result)
+	fmt.Print("\nfffff\n")
+	// fmt.Println(item, result, user, itemType)
 	return ""
 }
