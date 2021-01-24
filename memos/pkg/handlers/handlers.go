@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/guregu/dynamo"
@@ -16,7 +15,7 @@ var (
 	err error
 )
 
-// GetMemo is get memo by pk
+/*
 func GetMemo(dynaClient *dynamo.DB, pk string) (*events.APIGatewayProxyResponse, error) {
 	// dynamo.Table
 	table := dynaClient.Table(tableName)
@@ -26,22 +25,20 @@ func GetMemo(dynaClient *dynamo.DB, pk string) (*events.APIGatewayProxyResponse,
 		return nil, err
 	}
 	body := map[string]string{
-		"memo_id":   memo.MemoID,
+		"memo_id":   memo.MemoId,
 		"memo_type": memo.MemoType,
-		"value":     memo.Value,
 	}
 	resp, err := apires(body)
 	return resp, err
 }
+*/
 
 // CreateMemo is create a memo
-func CreateMemo(dynaClient *dynamo.DB) (*events.APIGatewayProxyResponse, error) {
+func CreateMemo(dynaClient *dynamo.DB, request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse, error) {
+	var memo memos.Memo
 	table := dynaClient.Table(tableName)
-	memo := memos.Memo{
-		MemoID:   "gggggg",
-		MemoType: "Golang",
-		Value:    "I think it's so difficult",
-	}
+	json.Unmarshal([]byte(request.Body), &memo)
+	memo.User = "Twaki" // next -> get auth info from User
 	memoID, err := memos.Create(table, &memo)
 	if err != nil {
 		return nil, err

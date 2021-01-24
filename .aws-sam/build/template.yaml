@@ -23,7 +23,7 @@ Resources:
           Type: Api
           Properties:
             Path: /memos
-            Method: GET
+            Method: POST
             RequestParameters:
               method.request.querystring.memo-type:
                 Required: false
