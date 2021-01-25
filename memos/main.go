@@ -18,16 +18,7 @@ var (
 	dynaClient dynamo.DB
 )
 
-func getCurrentDate() string {
-	t := time.Now()
-	const layout2 = "2006-01-02"
-	fmt.Println(t.Format(layout2))
-	return t.Format(layout2)
-}
-
 func main() {
-	fmt.Println(getCurrentDate())
-
 	dynaClient = *db.InitalizeDynamoClient()
 	lambda.Start(handler)
 }

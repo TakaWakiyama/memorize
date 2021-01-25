@@ -7,11 +7,13 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/guregu/dynamo"
 	"log"
 	"memos/common/db"
 	"os"
+	"time"
+
+	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/guregu/dynamo"
 
 	"memos/memos/pkg/memos"
 	"memos/notifications/pkg/builder"
@@ -20,7 +22,17 @@ import (
 
 var dynaClient dynamo.DB
 
+func getDate(t time.Time) string {
+	const layout2 = "2006-01-02"
+	fmt.Println(t.Format(layout2))
+	return t.Format(layout2)
+}
+
 func main() {
+	now := time.Now()
+	// tommrrow := now.AddDate(0, 0, 1)
+	yesterday := now.AddDate(0, 0, -1)
+	log.Printf("%s", getDate(yesterday))
 	log.Printf("log:START SendNotification")
 	dynaClient = *db.InitalizeDynamoClient()
 	lambda.Start(handler)
