@@ -3,9 +3,10 @@ package memos
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/guregu/dynamo"
-	"time"
 )
 
 var (
@@ -44,9 +45,9 @@ func Create(table dynamo.Table, memo *Memo) (string, error) {
 }
 
 // GetMemos is filtering Memo with user and memotype
-func GetMemos(table dynamo.Table, user, MemoType string) []Memo {
+func GetMemos(table dynamo.Table, user, MemoType string, DateCreated string) []Memo {
 	var result []Memo
-	err := table.Get("User", "Twaki").Filter("'MemoType' = ?", MemoType).All(&result)
+	err := table.Get("User", "Twaki").Filter("'MemoType' = ?", MemoType).Filter("'DateCreated' = ?", DateCreated).All(&result)
 	if err != nil {
 		fmt.Printf("%v", err)
 		return nil

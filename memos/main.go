@@ -2,8 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
-	"time"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
