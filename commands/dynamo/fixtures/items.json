@@ -2,8 +2,8 @@
   "User": {
     "S": "Twaki"
   },
-  "Date_created": {
-    "S": "2021-01-02"
+  "DateCreated": {
+    "S": "2021-02-03"
   },
   "MemoId": {
     "S": "0002"

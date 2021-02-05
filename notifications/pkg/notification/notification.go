@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 )
 
 //RequestBody is for sending notification on slack
@@ -14,6 +15,9 @@ type RequestBody struct {
 
 //SendNotificationToSlack is
 func SendNotificationToSlack(webhookURL string, text string) {
+	if os.Getenv("LAMBDA_ENV_TYPE") != "prod" {
+		return
+	}
 	body := RequestBody{}
 	body.Text = text
 	jsonBody, _ := json.Marshal(body)

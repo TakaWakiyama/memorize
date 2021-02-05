@@ -23,7 +23,7 @@ Resources:
           Type: Api
           Properties:
             Path: /memos
-            Method: GET
+            Method: POST
             RequestParameters:
               method.request.querystring.memo-type:
                 Required: false
@@ -76,6 +76,10 @@ Resources:
       Tracing: Active
       Policies:
       - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+      Environment:
+        Variables:
+          LAMBDA_ENV_TYPE: prod
+          SlackWebhookURl: https://hooks.slack.com/services/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
 Outputs:
   HelloWorldAPI:
     Description: API Gateway endpoint URL for Prod environment for First Function
