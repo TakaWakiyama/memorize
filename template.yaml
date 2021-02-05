@@ -83,6 +83,10 @@ Resources:
       Tracing: Active
       Policies:
         - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess # need to change (Read Only)
+      Environment:
+        Variables:
+          LAMBDA_ENV_TYPE: prod
+          SlackWebhookURl: https://hooks.slack.com/services/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
 
 
 Outputs:

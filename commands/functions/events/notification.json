@@ -2,5 +2,7 @@
   "user": "Twaki",
   "item_type": "url",
   "template": "{ Url } is good",
-  "dates": ["d1"]
+  "dates": [
+    "d1"
+  ]
 }
